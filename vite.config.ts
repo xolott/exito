@@ -35,6 +35,9 @@ const viteConfig: UserConfigExport = {
 const vitestConfig: VitestUserConfigInterface = {
     test: {
         globals: true,
+        coverage: {
+            reportsDirectory: ".coverage",
+        },
     },
 };
 export default defineConfig({
