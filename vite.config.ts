@@ -1,13 +1,14 @@
-import { defineConfig } from "vite";
+/// <reference types="vitest" />
+import { defineConfig, UserConfigExport } from "vite";
+import type { UserConfig as VitestUserConfigInterface } from "vitest/config";
 import vue from "@vitejs/plugin-vue";
 import pages from "vite-plugin-pages";
 import svg from "vite-svg-loader";
 import { resolve } from "path";
 import icons from "unplugin-icons/vite";
 
-console.log(process.env.ELECTRON ? "./" : ".");
-export default defineConfig({
-    base: process.env.ELECTRON ? "./" : "./",
+const viteConfig: UserConfigExport = {
+    base: "./",
 
     resolve: {
         alias: {
@@ -29,4 +30,14 @@ export default defineConfig({
     server: {
         port: 3000,
     },
-});
+};
+
+const vitestConfig: VitestUserConfigInterface = {
+    test: {
+        globals: true,
+    },
+};
+export default defineConfig({
+    ...viteConfig,
+    ...vitestConfig,
+} as unknown as UserConfigExport);

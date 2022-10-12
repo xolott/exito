@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import _ from "lodash";
 import { QueryFunction } from "@/infrastructure/github/types";
 import { GitRepository } from "@/models/git-repository";
 import {

@@ -1,5 +1,5 @@
 import { Authentication } from "@/features/interfaces/authentication";
-import * as _ from "lodash";
+import _ from "lodash";
 import { InvalidTokenError } from "@/features/errors";
 import { TokenMasker } from "@/infrastructure/authentication/masker";
 

@@ -97,7 +97,7 @@ describe("GitHub", () => {
 });
 
 function mockQueryWith(github: Github, response: Error | FetchWrapperReturnType | RequestError) {
-    return jest
+    return vi
         .spyOn(github as unknown as GithubTest, "graphqlWithAuth")
         .mockImplementation(async (query: string): Promise<GraphQlResponse<unknown>> => {
             if (response instanceof Error) throw response;

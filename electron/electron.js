@@ -2,8 +2,10 @@
 const { app, BrowserWindow, session } = require("electron");
 const { OS } = require("./os");
 const { Window } = require("./window");
+const Store = require("electron-store");
 
 function initialize() {
+    Store.initRenderer();
     app.whenReady().then(() => {
         session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
             callback({

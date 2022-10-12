@@ -2,7 +2,7 @@ import { GraphqlPaginatedItems, GraphqlPaginatedItemsFetcher } from "./graphql-p
 
 describe("Graphql Paginated Items", () => {
     it("should return empty array when undefined data is used", () => {
-        const fetcher = jest.fn() as GraphqlPaginatedItemsFetcher<string>;
+        const fetcher = vi.fn() as GraphqlPaginatedItemsFetcher<string>;
         const searchResult = new GraphqlPaginatedItems<string>({
             fetcher,
             items: undefined as unknown as string[],
@@ -18,7 +18,7 @@ describe("Graphql Paginated Items", () => {
     });
 
     it("should return false when there are no next or previous page", async () => {
-        const fetcher = jest.fn() as GraphqlPaginatedItemsFetcher<string>;
+        const fetcher = vi.fn() as GraphqlPaginatedItemsFetcher<string>;
         const searchResult = new GraphqlPaginatedItems<string>({
             fetcher,
             items: undefined as unknown as string[],
@@ -36,7 +36,7 @@ describe("Graphql Paginated Items", () => {
     });
 
     it("should return true when there are next or previous page", async () => {
-        const fetcher = jest.fn(() => ({
+        const fetcher = vi.fn(() => ({
             items: [],
             pageInfo: {
                 startCursor: "",
