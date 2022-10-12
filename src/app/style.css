@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.drag-none {
+    -webkit-user-drag: none;
+    -webkit-app-region: no-drag;
+}
+
+.drag {
+    -webkit-app-region: drag;
+}
+
+html {
+    --toolbar-height: 32px;
+}
