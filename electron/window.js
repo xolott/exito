@@ -8,8 +8,8 @@ class Window {
     constructor() {
         /** @type {import('electron').BrowserWindowConstructorOptions} */
         this._options = {
-            width: 800,
-            height: 600,
+            width: 1250,
+            height: 900,
             titleBarStyle: "hidden",
             webPreferences: {
                 preload: path.join(__dirname, "preload.js"),
