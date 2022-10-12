@@ -1,3 +1,15 @@
+import { RequestError } from "@octokit/request-error";
+import { RequestErrorOptions } from "@octokit/request-error/dist-types/types";
+
+export interface FetchWrapperReturnType {
+    status?: number;
+    url?: string;
+    headers?: {
+        [header: string]: string;
+    };
+    data: Record<string, unknown>;
+}
+
 const badCredentials = {
     status: 401,
     response: {
@@ -44,6 +56,7 @@ const badCredentials = {
         body: '{"query":"\\n                query {\\n                    viewer {\\n                        login\\n                    }\\n                }\\n            "}',
     },
 };
+
 const unhandledError = {
     status: 444,
     response: {
@@ -90,7 +103,8 @@ const unhandledError = {
         body: '{"query":"\\n                query {\\n                    viewer {\\n                        login\\n                    }\\n                }\\n            "}',
     },
 };
-const repositories = {
+
+const repositories: FetchWrapperReturnType = {
     data: {
         search: {
             pageInfo: {
@@ -128,7 +142,8 @@ const repositories = {
         },
     },
 };
-const userInfo = {
+
+const userInfo: FetchWrapperReturnType = {
     data: {
         user: {
             avatarUrl: "MockedURL",
@@ -138,4 +153,10 @@ const userInfo = {
         },
     },
 };
-export default { badCredentials, userInfo, unhandledError, repositories };
+
+export default {
+    badCredentials: new RequestError("Error", badCredentials.status, badCredentials as RequestErrorOptions),
+    unhandledError: new RequestError("Error", unhandledError.status, unhandledError as RequestErrorOptions),
+    userInfo,
+    repositories,
+};

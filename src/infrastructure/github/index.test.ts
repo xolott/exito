@@ -2,7 +2,7 @@ import { Github } from "./index";
 import { InvalidTokenError } from "@/features/errors";
 import { graphql } from "@octokit/graphql";
 import fetchMock from "fetch-mock";
-import fixtures from "./index.fixture";
+import fixtures, { FetchWrapperReturnType } from "./index.fixture";
 import { graphql as graphqlType, GraphQlResponse } from "@octokit/graphql/dist-types/types";
 import { GitUser } from "../../models/GitUser";
 import { RequestError } from "@octokit/request-error";
@@ -94,47 +94,9 @@ describe("GitHub", () => {
             spy.mockRestore();
         });
     });
-
-    // describe("Get repository collaborators", () => {
-    //     const owner = "testOwner";
-    //     const name = "";
-    //     it("should throw an Unauthorized error on private repos", async () => {
-    //         const github = new Github("1234");
-    //         const spy = mockQueryWith(github, fixtures.unauthorized);
-    //         await expect(github.getCollaborators(owner, name)).rejects.toBeInstanceOf(UnauthorizedError);
-    //         spy.mockRestore();
-    //     });
-    //
-    //     it("should return a list of collaborators from one repo", async () => {
-    //         const github = new Github("1234");
-    //         const spy = mockQueryWith(github, fixtures.repoCollaborators);
-    //         const collaborators = [
-    //             {
-    //                 avatarUrl: "MockedURL",
-    //                 id: "MockedID",
-    //                 username: "MockedLogin",
-    //                 name: "MockedName",
-    //             },
-    //             {
-    //                 avatarUrl: "MockedURL",
-    //                 id: "MockedID",
-    //                 username: "MockedLogin",
-    //                 name: "MockedName",
-    //             },
-    //             {
-    //                 avatarUrl: "MockedURL",
-    //                 id: "MockedID",
-    //                 username: "MockedLogin",
-    //                 name: "MockedName",
-    //             },
-    //         ];
-    //         await expect(await github.getCollaborators(owner, name)).toBe(collaborators);
-    //         spy.mockRestore();
-    //     });
-    // });
 });
 
-function mockQueryWith(github: Github, response: Record<string, never>) {
+function mockQueryWith(github: Github, response: Error | FetchWrapperReturnType | RequestError) {
     return jest
         .spyOn(github as unknown as GithubTest, "graphqlWithAuth")
         .mockImplementation(async (query: string): Promise<GraphQlResponse<unknown>> => {
@@ -142,7 +104,9 @@ function mockQueryWith(github: Github, response: Record<string, never>) {
             return await graphql(query, {
                 request: {
                     fetch: fetchMock.sandbox().post("https://api.github.com/graphql", () => {
-                        if (response.status >= 400) throw new RequestError("Error", response.status, response as never);
+                        if (!response) return response;
+                        if (response instanceof RequestError && response.status >= 400)
+                            throw new RequestError("Error", response.status, response);
                         return response;
                     }),
                 },
