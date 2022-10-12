@@ -1,6 +1,3 @@
-/// <reference types="vite/client.d.ts" />
-/// <reference types="vite-plugin-pages/client.d.ts" />
-/// <reference types="vite-svg-loader" />
 /// <reference types="unplugin-icons/types/vue" />
 
 declare module "*.vue" {

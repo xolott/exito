@@ -16,7 +16,13 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "typeRoots": ["./node_modules/@types", "./src"]
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/vite/client.d.ts",
+      "./node_modules/vite-plugin-pages/client.d.ts",
+      "./node_modules/vite-svg-loader/index.d.ts",
+      "./node_modules/unplugin-icons/types/vue.d.ts"
+    ]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "exclude": ["src/**/*.fixtures.ts", "src/**/*.test.ts"],

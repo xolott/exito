@@ -2,7 +2,7 @@
     <router-link
         class="group flex items-center px-2 py-2 font-medium rounded-md"
         :class="linkStyles.a"
-        :to="route.link.route"
+        :to="route.link.route.value"
     >
         <Component
             :is="route.icon"

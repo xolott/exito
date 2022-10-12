@@ -13,7 +13,7 @@
                 </div>
                 <nav class="mt-5 flex-1 space-y-1 px-2">
                     <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                    <NavItem v-for="route in routes" :key="route" :route="route"></NavItem>
+                    <NavItem v-for="route in routes" :key="route.name" :route="route"></NavItem>
                 </nav>
             </div>
 

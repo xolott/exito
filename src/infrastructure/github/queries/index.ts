@@ -2,7 +2,6 @@ import { GHGetUserInfoResponse, GHGetUserInfoQuery } from "@/infrastructure/gith
 
 export enum GHQueryType {
     GET_USER_INFO = "get_user_info",
-    SEARCH = "search",
 }
 
 export interface GHQueryResponses {

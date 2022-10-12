@@ -1,12 +1,12 @@
 import { useLink } from "vue-router";
 import IconHomeOutline from "~icons/heroicons/home";
 import IconGearOutline from "~icons/heroicons/cog-6-tooth";
-import { VueElement } from "vue";
+import { FunctionalComponent } from "vue";
 
 export interface Route {
     name: string;
     link: ReturnType<typeof useLink>;
-    icon: VueElement;
+    icon: FunctionalComponent;
 }
 
 export const getRoutes = () => [
