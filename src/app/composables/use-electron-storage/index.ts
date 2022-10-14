@@ -1,7 +1,8 @@
 import { MaybeComputedRef, pausableWatch, RemovableRef, resolveUnref } from "@vueuse/core";
-import Store from "electron-store";
 import { ref } from "vue";
 import _ from "lodash";
+import { ElectronStore } from "./electron-store";
+type OnDidChangeCallback = <T>(newValue: unknown, oldValue: unknown) => T;
 
 interface UseElectronStoreOptions {
     flush?: "pre" | "post" | "sync";
@@ -10,17 +11,17 @@ interface UseElectronStoreOptions {
     writeDefaults?: boolean;
     mergeDefaults?: boolean;
     onError?: (e: Error | unknown) => void;
-    storage?: Store;
+    storage?: ElectronStore;
 }
 
-let electronStore: Store | null = null;
+let electronStore: ElectronStore | null = null;
 
 function getStore() {
-    if (!electronStore) electronStore = new Store();
+    if (!electronStore) electronStore = new ElectronStore();
     return electronStore;
 }
 
-export function useElectronStore<T extends string | number | boolean | object | null>(
+export function useElectronStorage<T extends string | number | boolean | object | null>(
     key: string,
     defaults: MaybeComputedRef<T>,
     options?: UseElectronStoreOptions,
@@ -43,7 +44,7 @@ export function useElectronStore<T extends string | number | boolean | object | 
 
     const { pause: pauseWatch, resume: resumeWatch } = pausableWatch(data, () => write(data.value), { flush, deep });
 
-    listenToStorageChanges && _storage.onDidChange(key, update as (newValue: unknown) => T);
+    listenToStorageChanges && _storage.onDidChange(key, update as OnDidChangeCallback);
     update();
 
     return data;
@@ -75,6 +76,8 @@ export function useElectronStore<T extends string | number | boolean | object | 
             return rawValue;
         } catch (e) {
             onError(e);
+            // TODO: wait for a fix to remove the c8 ignore comment. https://github.com/bcoe/c8/issues/229#issuecomment-1277999927
+            /* c8 ignore next */
         } finally {
             resumeWatch();
         }

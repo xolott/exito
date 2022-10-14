@@ -13,6 +13,8 @@ const viteConfig: UserConfigExport = {
     resolve: {
         alias: {
             "@": resolve(__dirname, "src"),
+            // https://github.com/vitejs/vite/discussions/9330
+            "node-fetch": "axios",
         },
     },
 
@@ -29,6 +31,9 @@ const viteConfig: UserConfigExport = {
 
     server: {
         port: 3000,
+        watch: {
+            ignored: ["**/.coverage/**"],
+        },
     },
 };
 
@@ -36,7 +41,9 @@ const vitestConfig: VitestUserConfigInterface = {
     test: {
         globals: true,
         coverage: {
+            enabled: true,
             reportsDirectory: ".coverage",
+            exclude: ["**/__mocks__/", "**/tests/", "**/*.test.ts", "**/*.fixture.ts"],
         },
     },
 };

@@ -22,8 +22,9 @@
 
 <script setup lang="ts">
     import { computed } from "vue";
-    import { settings } from "@/infrastructure/settings";
+    import { useSettings } from "@/app/composables/use-injectable";
 
+    const settings = useSettings();
     const classes = computed(() => {
         return {
             "top-[length:var(--toolbar-height)]": settings.isElectron,

@@ -4,7 +4,7 @@ import { graphql } from "@octokit/graphql";
 import fetchMock from "fetch-mock";
 import fixtures, { FetchWrapperReturnType } from "./index.fixture";
 import { graphql as graphqlType, GraphQlResponse } from "@octokit/graphql/dist-types/types";
-import { GitUser } from "../../models/GitUser";
+import { GitUser } from "../../models/git-user";
 import { RequestError } from "@octokit/request-error";
 import { GitRepository } from "../../models/git-repository";
 import { GitSearchType } from "../../features/interfaces/git-server";

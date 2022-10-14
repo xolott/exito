@@ -1,22 +1,24 @@
+import { ClientEvents } from "@/core/constants";
+
 class WindowToolbarManager {
     minimizeWindow() {
-        window.electron.send("window:minimize");
+        window.electron.send(ClientEvents.WINDOW_MINIMIZE);
     }
 
     maximizeWindow() {
-        window.electron.send("window:maximize");
+        window.electron.send(ClientEvents.WINDOW_MAXIMIZE);
     }
 
     unmaximizeWindow() {
-        window.electron.send("window:unmaximize");
+        window.electron.send(ClientEvents.WINDOW_UNMAXIMIZE);
     }
 
     maxUnmaxWindow() {
-        window.electron.send("window:maxUnmax");
+        window.electron.send(ClientEvents.WINDOW_MAX_UNMAX);
     }
 
     closeWindow() {
-        window.electron.send("window:close");
+        window.electron.send(ClientEvents.WINDOW_CLOSE);
     }
 }
 

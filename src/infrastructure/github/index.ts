@@ -1,6 +1,6 @@
 import { GitSearchType, GitSearchTypeResponse, GitServer } from "@/features/interfaces/git-server";
 import { Authentication } from "@/features/interfaces/authentication";
-import { GitUser } from "@/models/GitUser";
+import { GitUser } from "@/models/git-user";
 import { ApiTokenAuthentication } from "@/infrastructure/authentication/api-token";
 import { graphql } from "@octokit/graphql";
 import { GraphQlResponse, graphql as graphqlType, RequestParameters } from "@octokit/graphql/dist-types/types";

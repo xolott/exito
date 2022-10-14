@@ -1,4 +1,4 @@
-import { Masker } from "@/infrastructure/authentication/masker";
+import { Masker } from "./masker";
 
 describe("Masker", () => {
     it("should return the input when it's null, empty or undefined", () => {

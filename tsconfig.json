@@ -7,6 +7,8 @@
     "strict": true,
     "jsx": "preserve",
     "sourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
@@ -16,7 +18,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["./node_modules/vitest/globals"],
+    "types": ["./node_modules/vitest/globals", "unplugin-icons/types/vue"],
     "typeRoots": [
       "./node_modules/@types",
       "./node_modules/vite/client.d.ts",
@@ -26,6 +28,6 @@
     ]
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
-  "exclude": ["src/**/*.fixtures.ts", "src/**/*.test.ts", "src/**/test", "src/**/tests"],
+  "exclude": ["src/**/*.fixtures.ts", "src/**/*.test.ts", "src/**/test", "src/**/tests", "**/__mocks__/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

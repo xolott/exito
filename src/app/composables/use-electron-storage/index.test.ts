@@ -2,15 +2,16 @@
  * @vitest-environment happy-dom
  */
 
-import Store from "electron-store";
-import { useSetup } from "../../../tests/mount";
-import { useElectronStore } from "./use-electron-store";
-import { nextTwoTick } from "../../../tests/next-tick";
+import { useSetup } from "../../tests/mount";
+import { useElectronStorage } from "./index";
+import { nextTwoTick } from "@/app/tests/next-tick";
+import { ElectronStore } from "./electron-store";
 
 const KEY = "TEST_KEY";
-vi.mock("electron-store");
 
-describe("useElectronStore", () => {
+vi.mock("./electron-store.ts");
+
+describe("useElectronStorage", () => {
     const storageState = new Map<string, string | number | object | boolean | null | undefined>();
     const storageMock = {
         get: vi.fn((key) => storageState.get(key)),
@@ -18,7 +19,7 @@ describe("useElectronStore", () => {
         set: vi.fn((key, value) => storageState.set(key, value)),
         onDidChange: vi.fn(),
     };
-    const storage = storageMock as unknown as Store;
+    const storage = storageMock as unknown as ElectronStore;
     beforeEach(() => {
         storageState.clear();
         storageMock.get.mockClear();
@@ -29,10 +30,10 @@ describe("useElectronStore", () => {
 
     it("uses electron-store by default", () => {
         useSetup(() => {
-            const ref = useElectronStore(KEY, null);
+            const ref = useElectronStorage(KEY, null);
             return { ref };
         });
-        expect(Store).toHaveBeenCalledTimes(1);
+        expect(ElectronStore).toHaveBeenCalledTimes(1);
     });
 
     it("should throw error on get", () => {
@@ -45,11 +46,11 @@ describe("useElectronStore", () => {
             set: vi.fn(),
             onDidChange: vi.fn(),
         };
-        const storage = storageMock as unknown as Store;
+        const storage = storageMock as unknown as ElectronStore;
 
         storageState.set(KEY, 0);
         const promiseThatThrows = async () => {
-            const storedRef = useElectronStore<number>(KEY, null as unknown as number, { storage });
+            const storedRef = useElectronStorage<number>(KEY, null as unknown as number, { storage });
             storedRef.value = null;
 
             await nextTwoTick();
@@ -67,10 +68,10 @@ describe("useElectronStore", () => {
             delete: vi.fn(),
             onDidChange: vi.fn(),
         };
-        const storage = storageMock as unknown as Store;
+        const storage = storageMock as unknown as ElectronStore;
 
         const promiseThatThrows = async () => {
-            const storedRef = useElectronStore<number>(KEY, 0, { storage });
+            const storedRef = useElectronStorage<number>(KEY, 0, { storage });
             storedRef.value = null;
 
             await nextTwoTick();
@@ -87,7 +88,7 @@ describe("useElectronStore", () => {
         {
             defaultValue: 0,
             initialValue: 3,
-            nextValues: [1, -1, 10.45, -43.1],
+            nextValues: [1, -1, 10.45, -43.1, Math.random(), Math.random() * 100, Math.floor(Math.random() * 23)],
         },
         {
             defaultValue: false,
@@ -98,7 +99,7 @@ describe("useElectronStore", () => {
     testCases.forEach((testCase) => {
         it(`accepts '${typeof testCase.initialValue}' values in vue component`, async () => {
             const vm = useSetup(() => {
-                const ref = useElectronStore<typeof testCase.initialValue>(KEY, testCase.initialValue, { storage });
+                const ref = useElectronStorage<typeof testCase.initialValue>(KEY, testCase.initialValue, { storage });
                 return { ref };
             });
             expect(vm.ref).toBe(testCase.initialValue);
@@ -114,7 +115,7 @@ describe("useElectronStore", () => {
 
         it(`accepts '${typeof testCase.initialValue}' values`, async () => {
             storageState.set(KEY, testCase.defaultValue);
-            const storedRef = useElectronStore<typeof testCase.initialValue>(KEY, testCase.initialValue, { storage });
+            const storedRef = useElectronStorage<typeof testCase.initialValue>(KEY, testCase.initialValue, { storage });
             expect(storedRef.value).toBe(testCase.defaultValue);
             expect(storage.get).toBeCalledWith(KEY);
             expect(storage.set).toHaveBeenCalledTimes(0);
@@ -129,7 +130,7 @@ describe("useElectronStore", () => {
 
         it(`removes '${typeof testCase.initialValue}' values`, async () => {
             storageState.set(KEY, testCase.defaultValue);
-            const storedRef = useElectronStore<typeof testCase.initialValue>(
+            const storedRef = useElectronStorage<typeof testCase.initialValue>(
                 KEY,
                 null as unknown as typeof testCase.initialValue,
                 { storage },
@@ -147,15 +148,15 @@ describe("useElectronStore", () => {
     it("mergeDefaults", async () => {
         const options = { storage, mergeDefaults: true };
         storageState.set(KEY, 0);
-        const numberRef = useElectronStore(KEY, 1, options);
+        const numberRef = useElectronStorage(KEY, 1, options);
         expect(numberRef.value).toBe(0);
 
         storageState.set(KEY, { foo: "bar" });
-        const objectRef = useElectronStore<object>(KEY, { foo: "not-bar", fulanito: "menganito" }, options);
+        const objectRef = useElectronStorage<object>(KEY, { foo: "not-bar", fulanito: "menganito" }, options);
         expect(objectRef.value).toEqual({ foo: "bar", fulanito: "menganito" });
 
         storageState.set(KEY, [1, 2]);
-        const arrayRef = useElectronStore<Array<number>>(KEY, [3, 4], options);
+        const arrayRef = useElectronStorage<Array<number>>(KEY, [3, 4], options);
         expect(arrayRef.value).toEqual([1, 2]);
     });
 
@@ -170,10 +171,10 @@ describe("useElectronStore", () => {
                 callback = cb;
             }),
         };
-        const storage = storageMock as unknown as Store;
+        const storage = storageMock as unknown as ElectronStore;
         const options = { storage };
         storageState.set(KEY, 0);
-        const numberRef = useElectronStore(KEY, 1, options);
+        const numberRef = useElectronStorage(KEY, 1, options);
         expect(storage.get).toHaveBeenCalledTimes(1);
 
         expect(numberRef.value).toBe(0);
@@ -189,7 +190,7 @@ describe("useElectronStore", () => {
     it("doesn't subscribe to storage updates", async () => {
         const options = { storage, listenToStorageChanges: false };
         storageState.set(KEY, 0);
-        const numberRef = useElectronStore(KEY, 1, options);
+        const numberRef = useElectronStorage(KEY, 1, options);
         expect(numberRef.value).toBe(0);
         expect(storage.onDidChange).toHaveBeenCalledTimes(0);
     });

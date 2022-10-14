@@ -79,12 +79,13 @@
 
 <script setup lang="ts">
     import { computed } from "vue";
-    import { settings } from "@/infrastructure/settings";
     import NavItem from "@/app/layout/navigation/nav-item.vue";
 
     import { getRoutes } from "@/app/routes";
+    import { useSettings } from "@/app/composables/use-injectable";
 
     const routes = getRoutes();
+    const settings = useSettings();
     const classes = computed(() => {
         return {
             "top-[length:var(--toolbar-height)]": settings.isElectron,

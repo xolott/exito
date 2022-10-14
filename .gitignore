@@ -28,3 +28,4 @@ dist-ssr
 .vscode/
 .idea/
 dist_electron/
+build_electron/

@@ -1,4 +1,4 @@
-import { GitUser } from "@/models/GitUser";
+import { GitUser } from "@/models/git-user";
 import { Authentication } from "@/features/interfaces/authentication";
 import { GitRepository } from "@/models/git-repository";
 import { PaginatedItems } from "@/features/interfaces/paginated-items";

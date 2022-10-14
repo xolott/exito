@@ -1,6 +1,16 @@
-import type { Settings as SettingsInterface } from "@/models/Settings";
+import type { Settings as SettingsInterface } from "@/models/settings";
+import { injectable } from "inversify";
 
-class SettingsLoader implements SettingsInterface {
+interface ImportMetaEnv {
+    readonly IS_DEV: boolean;
+}
+
+interface ImportMeta {
+    readonly env: ImportMetaEnv;
+}
+
+@injectable()
+export class SettingsLoader implements SettingsInterface {
     isDev: boolean;
     isElectron: boolean;
     isMac: boolean;
@@ -12,6 +22,7 @@ class SettingsLoader implements SettingsInterface {
         this.isElectron = !!window.electron;
         this.isMac = process.platform === "darwin";
         this.isWindows = process.platform === "win32";
+        console.log(this);
     }
 
     getProcess() {
@@ -19,11 +30,9 @@ class SettingsLoader implements SettingsInterface {
             return process;
         } catch {
             return {
-                env: import.meta.env,
+                env: (import.meta as unknown as ImportMeta).env,
                 platform: "browser",
             };
         }
     }
 }
-
-export const settings = new SettingsLoader();
