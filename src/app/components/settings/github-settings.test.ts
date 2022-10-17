@@ -19,6 +19,7 @@ describe("Component - GithubSettings", () => {
     beforeEach(() => {
         initializeTestContainer();
     });
+
     it("should be rendered", async () => {
         const component = mountWithPinia(GithubSettings);
         await nextTwoTick();
