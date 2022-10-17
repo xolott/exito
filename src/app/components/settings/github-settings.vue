@@ -19,20 +19,13 @@
                             {{ githubServer.auth.safeString }}
                         </span>
                         <span class="ml-4 flex-shrink-0 flex gap-3">
-                            <button
-                                type="button"
-                                class="rounded-md py-2 px-3 bg-gray-500 font-medium text-white hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-0"
-                            >
-                                Update
-                            </button>
-                            <button
-                                type="button"
-                                class="rounded-md py-2 px-3 bg-red-500 font-medium text-white hover:bg-red-400 focus:outline-none focus:ring-2 focus:ring-0"
-                            >
-                                Delete
-                            </button>
+                            <Button @click="updateToken"> Update </Button>
+                            <Button color="danger" @click="deleteToken"> Delete </Button>
                         </span>
                     </template>
+                    <span v-else class="flex justify-end w-full">
+                        <Button @click="updateToken"> Add </Button>
+                    </span>
                 </dd>
             </div>
         </dl>
@@ -42,8 +35,29 @@
 <script setup lang="ts">
     import IconGithub from "~icons/mdi/github";
     import { useGithubServer } from "@/app/composables/use-github-server";
+    import { Button } from "@/app/components/core";
+    import GithubApiTokenModal from "@/app/components/settings/github-api-token-modal.vue";
+    import { useModal } from "@/app/composables";
+    import { useUserSettingsStore } from "@/app/plugins/store/modules/user-settings";
+    import _ from "lodash";
+    import { useNotification } from "@/app/composables/use-notification";
 
     const githubServer = useGithubServer();
+    const userSettings = useUserSettingsStore();
+    const notify = useNotification();
+    const { show } = useModal<string>(GithubApiTokenModal);
+
+    async function updateToken() {
+        const token = await show();
+        if (_.isNil(token)) return;
+        userSettings.updateGithubSettings({ apiKey: token });
+        notify.success({ title: "Github API Token updated", timeout: 3000 });
+    }
+
+    async function deleteToken() {
+        userSettings.updateGithubSettings({ apiKey: null });
+        notify.success({ title: "Github API Token deleted", timeout: 3000 });
+    }
 </script>
 
 <style scoped></style>

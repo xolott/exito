@@ -5,7 +5,7 @@ describe("GraphQL Page Info", () => {
         const cursor = "testCursor123";
         it("should return and empty object whe empty options are used", () => {
             const result = generatePaginationVariables({}, {});
-            expect(result).toBeDefined();
+            expect(result).toBeInstanceOf(Object);
             expect(Object.keys(result)).toHaveLength(0);
         });
 

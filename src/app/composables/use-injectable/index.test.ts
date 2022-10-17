@@ -34,7 +34,7 @@ describe("Composable - useInjectable", () => {
 
         const instance = useInjectable<Injected>(TYPES.Injected, container);
 
-        expect(instance).toBeDefined();
+        expect(instance).toBeInstanceOf(Object);
         expect(instance).toBeInstanceOf(Injected);
         expect(instance.foo).toBe("bar");
     });
@@ -44,7 +44,7 @@ describe("Composable - useInjectable", () => {
 
         const instance = useInjectable<Injected>(TYPES.Injected);
 
-        expect(instance).toBeDefined();
+        expect(instance).toBeInstanceOf(Object);
         expect(instance).toBeInstanceOf(Injected);
         expect(instance.foo).toBe("bar");
         iocContainer.unbind(TYPES.Injected);
@@ -56,7 +56,7 @@ describe("Composable - useInjectable", () => {
 
         const instance = useSettings(container);
 
-        expect(instance).toBeDefined();
+        expect(instance).toBeInstanceOf(Object);
         expect(instance).toBeInstanceOf(Injected);
         expect((instance as unknown as Injected).foo).toBe("bar");
     });

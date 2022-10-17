@@ -28,7 +28,8 @@ export class ElectronStore {
 
     set(key: string, value: unknown) {
         if (!this.isActive) return;
-        window.electron.send(ClientEvents.STORAGE_GET, key, value);
+        const parsedValue = this.parseValue(value);
+        window.electron.send(ClientEvents.STORAGE_SET, key, parsedValue);
     }
 
     delete(key: string) {
@@ -46,6 +47,12 @@ export class ElectronStore {
     private didChangeHandle(__: IpcRendererEvent, key: string, newValue: unknown, oldValue: unknown) {
         if (!_.has(this.didChangeCallbacks, key)) return;
         this.didChangeCallbacks[key].forEach((callback) => callback(newValue, oldValue));
+    }
+
+    private parseValue(value: unknown) {
+        if (typeof value !== "object") return value;
+        const stringValue = JSON.stringify(value);
+        return JSON.parse(stringValue);
     }
 }
 /* c8 ignore stop */

@@ -7,7 +7,7 @@
         <!--            class="h-max bg-black flex items-center justify-center fixed inset-x-0 top-0 select-none drag"-->
         <!--            @dblclick="onDbClick"-->
         <!--        >-->
-        <span class="drag text-center text-white pointer-events-none">Exito</span>
+        <span class="drag text-center text-white select-none pointer-events-none">Exito</span>
         <!--        </div>-->
     </header>
 </template>
@@ -16,7 +16,6 @@
     import { WindowToolbar } from "@/infrastructure/window-toolbar";
 
     function onDbClick() {
-        console.log("dbclick");
         WindowToolbar.maxUnmaxWindow();
     }
 </script>

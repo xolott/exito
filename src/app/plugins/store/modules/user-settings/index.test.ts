@@ -1,10 +1,12 @@
 import { useUserSettingsStore } from "./index";
 import { preparePiniaStore } from "@/app/tests/pinia-store";
+import { initializeTestContainer } from "../../../../tests/test-container";
 
 vi.mock("@/app/composables/use-electron-storage/electron-store");
 
 describe("User Settings Store", () => {
     beforeEach(() => {
+        initializeTestContainer();
         preparePiniaStore({ stubActions: false });
     });
 

@@ -21,6 +21,7 @@
                 </div>
             </div>
         </div>
+        <NotificationManager />
     </div>
 </template>
 
@@ -29,6 +30,7 @@
     import SidebarButton from "@/app/layout/navigation/sidebar-button.vue";
     import { computed } from "vue";
     import { useRoute } from "vue-router";
+    import NotificationManager from "@/app/components/notification/notification-manager.vue";
 
     const route = useRoute();
     const title = computed(() => {

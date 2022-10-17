@@ -1,26 +1,35 @@
 /**
- * @vitest-environment happy-dom
+ * @vitest-environment jsdom
  */
 
 import { mountWithPinia } from "../../tests/pinia-store";
 import GithubSettings from "./github-settings.vue";
 import { useUserSettingsStore } from "../../plugins/store/modules/user-settings";
 import { nextTwoTick } from "../../tests/next-tick";
+import { initializeTestContainer } from "../../tests/test-container";
 
 vi.mock("@/app/composables/use-electron-storage/electron-store");
+vi.mock("@/app/composables/use-modal", () => ({
+    useModal: vi.fn(() => ({ show: vi.fn() })),
+}));
 
 const TOKEN_SPAN_SELECTOR = "[data-test-id=github-settings-token]";
+
 describe("Component - GithubSettings", () => {
-    it("should be rendered", () => {
+    beforeEach(() => {
+        initializeTestContainer();
+    });
+    it("should be rendered", async () => {
         const component = mountWithPinia(GithubSettings);
-        expect(component).toBeDefined();
-        component.find(TOKEN_SPAN_SELECTOR);
+        await nextTwoTick();
+        expect(component.find(TOKEN_SPAN_SELECTOR).exists()).toBeFalsy();
     });
 
     it("token field shouldn be rendered when the token is updated", async () => {
         const component = mountWithPinia(GithubSettings, { stubActions: false });
+        await nextTwoTick();
         const store = useUserSettingsStore();
-        expect(component).toBeDefined();
+        expect(component).toBeInstanceOf(Object);
         expect(component.find(TOKEN_SPAN_SELECTOR).exists()).toBeFalsy();
 
         const apiKey = "123";

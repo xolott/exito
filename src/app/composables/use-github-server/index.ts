@@ -14,7 +14,7 @@ export function useGithubServer(): Ref<Github | null> {
     const githubRef = ref(createGithubServer()) as Ref<Github | null>;
 
     userSettings.$subscribe(() => {
-        githubRef.value = createGithubServer() /* c8 ignore next */ || null;
+        githubRef.value = createGithubServer();
     });
 
     return githubRef;

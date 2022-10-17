@@ -2,7 +2,7 @@
     <!-- Static sidebar for desktop -->
     <div class="hidden md:fixed md:inset-y-0 md:flex md:w-64 md:flex-col" :class="classes">
         <!-- Sidebar component, swap this element with another sidebar if you like -->
-        <div class="flex min-h-0 flex-1 flex-col bg-gray-800">
+        <div class="flex min-h-0 flex-1 flex-col bg-primary-800">
             <div class="flex flex-1 flex-col overflow-y-auto pt-5 pb-4">
                 <div class="flex flex-shrink-0 items-center px-4">
                     <img
@@ -17,9 +17,9 @@
                 </nav>
             </div>
 
-            <div class="flex flex-shrink-0 bg-gray-700 p-4">
+            <div v-if="user" class="flex flex-shrink-0 bg-primary-700 p-4">
                 <div class="group block w-full flex-shrink-0">
-                    <Avatar></Avatar>
+                    <Avatar :name="user.name" :image-url="user.avatarUrl"></Avatar>
                 </div>
             </div>
         </div>
@@ -32,9 +32,12 @@
     import Avatar from "@/app/components/avatar.vue";
     import { getRoutes } from "@/app/routes";
     import { useSettings } from "@/app/composables/use-injectable";
+    import { useSessionStore } from "@/app/plugins/store/modules/session";
 
     const routes = getRoutes();
     const settings = useSettings();
+    const sessionStore = useSessionStore();
+    const user = computed(() => sessionStore.userInfo);
 
     const classes = computed(() => {
         return {

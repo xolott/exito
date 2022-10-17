@@ -6,7 +6,7 @@
     >
         <Component
             :is="route.icon"
-            class="text-gray-400 group-hover:text-gray-300 flex-shrink-0 h-6 w-6"
+            class="text-primary-400 group-hover:text-primary-300 flex-shrink-0 h-6 w-6"
             :class="linkStyles.icon"
         />
 
@@ -30,8 +30,8 @@
             a: {
                 "text-sm": !props.sm,
                 "text-base": props.sm,
-                "text-gray-300 hover:bg-gray-700 hover:text-white": !props.route.link.isExactActive.value,
-                "bg-gray-900 text-white": props.route.link.isExactActive.value,
+                "text-primary-300 hover:bg-primary-700 hover:text-white": !props.route.link.isExactActive.value,
+                "bg-primary-900 text-white": props.route.link.isExactActive.value,
             },
             icon: {
                 "mr-3": !props.sm,

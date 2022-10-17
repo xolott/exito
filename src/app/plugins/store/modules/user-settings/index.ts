@@ -1,18 +1,18 @@
 import { defineStore } from "pinia";
-import { useElectronStorage } from "@/app/composables/use-electron-storage";
 import {
     GithubUserSettings,
     LinearUserSettings,
     UserSettingsState,
 } from "@/app/plugins/store/modules/user-settings/state";
 import { enableStoreHMR } from "@/app/plugins/store/utils";
+import { useConditionalStorage } from "@/app/composables";
 
 export const useUserSettingsStore = defineStore({
     id: "userSettingsStore",
     state: (): UserSettingsState => {
         return {
-            github: useElectronStorage<GithubUserSettings | null>("github", null),
-            linear: useElectronStorage<LinearUserSettings | null>("linear", null),
+            github: useConditionalStorage<GithubUserSettings | null>("github", {}),
+            linear: useConditionalStorage<LinearUserSettings | null>("linear", null),
         };
     },
 

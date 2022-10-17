@@ -13,3 +13,5 @@ declare global {
         electron: ElectronClient;
     }
 }
+
+export type Dictionary<T> = Record<string, T>;
